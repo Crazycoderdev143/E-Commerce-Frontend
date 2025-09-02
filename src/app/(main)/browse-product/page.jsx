@@ -1,43 +1,48 @@
-'use client';
-import axios from 'axios';
-import { Heart } from 'lucide-react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import useWishlist from '@/context/WishlistContext';
-import useCartContext from '@/context/CartContext';
+"use client";
+import axios from "axios";
+import {Heart} from "lucide-react";
+import {Suspense} from "react";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
+import React, {useEffect, useState} from "react";
+import useWishlist from "@/context/WishlistContext";
+import useCartContext from "@/context/CartContext";
 
 const BrowseProduct = () => {
-  const { id } = useParams();
+  const {id} = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const { addItemToCart, isInCart } = useCartContext();
+  const {addToWishlist, removeFromWishlist, isInWishlist} = useWishlist();
+  const {addItemToCart, isInCart} = useCartContext();
   const [searching, setSearching] = useState(false);
 
   const fetchProductData = async () => {
     try {
       setLoading(true);
-      const searchQuery = searchParams.get('search');
-      const category = searchParams.get('category');
-      
+      const searchQuery = searchParams.get("search");
+      const category = searchParams.get("category");
+
       let url;
       if (searchQuery) {
-        url = `${process.env.NEXT_PUBLIC_API_URL}/product/search?query=${encodeURIComponent(searchQuery)}`;
+        url = `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/product/search?query=${encodeURIComponent(searchQuery)}`;
       } else if (category) {
-        url = `${process.env.NEXT_PUBLIC_API_URL}/product/search?query=${encodeURIComponent(category)}`;
+        url = `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/product/search?query=${encodeURIComponent(category)}`;
       } else {
         url = `${process.env.NEXT_PUBLIC_API_URL}/product/getall`;
       }
-      
+
       const res = await axios.get(url);
       setProductData(res.data);
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching products:', err);
-      setError('Failed to load products. Please try again later.');
+      console.error("Error fetching products:", err);
+      setError("Failed to load products. Please try again later.");
       setLoading(false);
     }
   };
@@ -77,13 +82,13 @@ const BrowseProduct = () => {
     return productData.map((prod, index) => {
       const isWishlisted = isInWishlist(prod._id);
       const inCart = isInCart(prod._id);
-      
+
       return (
         <div
           key={index}
           className="group bg-white shadow-sm hover:shadow-md rounded-sm transition-shadow duration-300 overflow-hidden border border-gray-200 hover:border-gray-300"
         >
-          <div 
+          <div
             className="relative overflow-hidden aspect-square cursor-pointer"
             onClick={() => router.push(`/view-product/${prod._id}`)}
           >
@@ -100,8 +105,10 @@ const BrowseProduct = () => {
                 toggleWishlist(prod);
               }}
             >
-              <Heart 
-                className={`w-5 h-5 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
+              <Heart
+                className={`w-5 h-5 ${
+                  isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
+                }`}
               />
             </button>
           </div>
@@ -115,10 +122,15 @@ const BrowseProduct = () => {
               {prod.details}
             </p>
             <div className="mt-2 flex items-center gap-2">
-              <span className="font-semibold text-lg text-gray-900">₹{prod.pprice}</span>
-              <span className="text-sm text-gray-500 line-through">₹{prod.price}</span>
+              <span className="font-semibold text-lg text-gray-900">
+                ₹{prod.pprice}
+              </span>
+              <span className="text-sm text-gray-500 line-through">
+                ₹{prod.price}
+              </span>
               <span className="text-sm text-green-600 font-medium">
-                {Math.round(((prod.price - prod.pprice) / prod.price) * 100)}% OFF
+                {Math.round(((prod.price - prod.pprice) / prod.price) * 100)}%
+                OFF
               </span>
             </div>
             <button
@@ -128,11 +140,11 @@ const BrowseProduct = () => {
               }}
               className={`mt-3 w-full py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 inCart
-                  ? 'bg-green-50 text-green-600 border border-green-600'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? "bg-green-50 text-green-600 border border-green-600"
+                  : "bg-blue-600 text-white hover:bg-blue-700"
               }`}
             >
-              {inCart ? 'Added to Cart' : 'Add to Cart'}
+              {inCart ? "Added to Cart" : "Add to Cart"}
             </button>
           </div>
         </div>
@@ -160,11 +172,13 @@ const BrowseProduct = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {displayProductCards()}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {displayProductCards()}
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 
