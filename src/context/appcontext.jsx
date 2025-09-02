@@ -20,7 +20,7 @@ export const AppProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             if (token) {
-                const response = await axios.get('http://localhost:5000/user/getdetails', {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/getdetails`, {
                     headers: { 'x-auth-token': token }
                 });
                 setUser(response.data);

@@ -108,7 +108,7 @@ const AddProduct = () => {
       // formData.append('category', values.category);
       // formData.append('image', values.image);
 
-      axios.post('http://localhost:5000/product/add', values)
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/add`, values)
         .then(res => {
           toast.success('Product added successfully');
           resetForm();

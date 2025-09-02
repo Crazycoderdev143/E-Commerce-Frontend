@@ -51,7 +51,7 @@ const ProductDetailsPage = () => {
 
      // const [preview, setPreview] = useState('');
 
-//      axios.post('http://localhost:5000/review/add', value)
+//      axios.post('${process.env.NEXT_PUBLIC_API_URL}/review/add', value)
 //      .then(res => {
 //        toast.success('User registered successfully')
 //        resetForm();

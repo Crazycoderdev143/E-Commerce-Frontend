@@ -23,7 +23,7 @@ export default function AdminDashboard() {
         const token = localStorage.getItem("token")
 
         // Fetch orders to calculate stats
-        const ordersResponse = await axios.get("http://localhost:5000/order/getall", {
+        const ordersResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/getall`, {
           headers: { "x-auth-token": token },
         })
 

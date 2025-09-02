@@ -33,7 +33,7 @@ const page = () => {
       // send values to backend
       // sending request to backend
 
-      axios.post('http://localhost:5000/contact/add', value)
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/contact/add`, value)
         .then(res => {
           toast.success('User registered successfully')
           resetForm();

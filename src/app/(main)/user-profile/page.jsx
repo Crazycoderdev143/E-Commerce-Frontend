@@ -28,7 +28,7 @@ const UserProfile = () => {
         router.push('/login');
         return;
       }
-      const response = await fetch('http://localhost:5000/user/getdetails', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getdetails`, {
         headers: {
           'x-auth-token': token
         }
@@ -50,7 +50,7 @@ const UserProfile = () => {
     setIsSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/user/update', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

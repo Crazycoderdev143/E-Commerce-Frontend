@@ -25,11 +25,11 @@ const BrowseProduct = () => {
       
       let url;
       if (searchQuery) {
-        url = `http://localhost:5000/product/search?query=${encodeURIComponent(searchQuery)}`;
+        url = `${process.env.NEXT_PUBLIC_API_URL}/product/search?query=${encodeURIComponent(searchQuery)}`;
       } else if (category) {
-        url = `http://localhost:5000/product/search?query=${encodeURIComponent(category)}`;
+        url = `${process.env.NEXT_PUBLIC_API_URL}/product/search?query=${encodeURIComponent(category)}`;
       } else {
-        url = `http://localhost:5000/product/getall`;
+        url = `${process.env.NEXT_PUBLIC_API_URL}/product/getall`;
       }
       
       const res = await axios.get(url);

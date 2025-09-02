@@ -18,7 +18,7 @@ const ViewProduct = () => {
 
     const fetchUserData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/product/getbyid/` + id);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/getbyid/${id}`);
             console.log(res.data);
             setUserData(res.data);
         } catch (error) {

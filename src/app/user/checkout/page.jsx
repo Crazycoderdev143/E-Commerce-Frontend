@@ -53,7 +53,7 @@ export default function CheckoutPage() {
   const getUserDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/user/getdetails', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/getdetails`, {
         headers: {
           'x-auth-token': token
         }
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
       const token = localStorage.getItem('token');
       
       // Create Razorpay order
-      const orderResponse = await axios.post('http://localhost:5000/pay/create-order', {
+      const orderResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/pay/create-order`, {
         amount: totalAmount, // Convert to paise
         currency: 'INR'
       }, {
@@ -105,7 +105,7 @@ export default function CheckoutPage() {
           
           try {
             // Verify payment
-            const verifyResponse = await axios.post('http://localhost:5000/pay/verify-payment', {
+            const verifyResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/pay/verify-payment`, {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature
@@ -189,7 +189,7 @@ export default function CheckoutPage() {
         razorpay_signature: paymentResponse.razorpay_signature
       };
 
-      await axios.post('http://localhost:5000/order/add', orderData, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/order/add`, orderData, {
         headers: { 'x-auth-token': token }
       });
     } catch (error) {

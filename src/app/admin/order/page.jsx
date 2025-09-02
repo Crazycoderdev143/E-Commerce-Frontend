@@ -14,7 +14,7 @@ const Order = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/order/getall', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/order/getall`, {
         headers: { 'x-auth-token': token }
       });
       setOrders(response.data);
@@ -29,7 +29,7 @@ const Order = () => {
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/order/update/${orderId}`, 
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/order/update/${orderId}`, 
         { status: newStatus },
         { headers: { 'x-auth-token': token } }
       );
